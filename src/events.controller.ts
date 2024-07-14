@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from '@nestjs/common';
+import { CreateEventDto } from './create-event.dto';
 
 @Controller('/events')
 export class EventsController {
@@ -14,7 +15,7 @@ export class EventsController {
       return {id: 1 , name: 'First event'}
    }
    @Post()
-   create(@Body() input) {
+   create(@Body() input: CreateEventDto) {
       return input;
    }
    @Patch(':id')
