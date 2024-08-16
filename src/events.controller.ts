@@ -3,7 +3,7 @@ import { CreateEventDto } from './create-event.dto';
 import { Event } from './event.entity';
 import { UpdateEventDto } from './update-event.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, MoreThan, Repository } from 'typeorm';
 
 @Controller('/events')
 export class EventsController {
@@ -19,6 +19,25 @@ export class EventsController {
    async findAll(){
      return await this.repository.find();
    }
+
+   @Get('/practice')
+   async practice() {
+     return await this.repository.find({
+       select: ['id', 'when'],
+       where: [{
+        //select * FROM event WHERE event.id >  3
+         id: MoreThan(3),
+         when: MoreThan(new Date('2021-02-12T13:00:00'))
+       }, {
+         description: Like('%meet%')
+       }],
+       take: 2,
+       order: {
+         id: 'DESC'
+       }
+     });
+   }
+
    @Get(':id')
    async findOne(@Param('id') id){
      return await this.repository.findOne(id);
@@ -46,4 +65,6 @@ export class EventsController {
     const event = await this.repository.findOne(id);
    return await this.repository.delete(event);
    }
+
+
 }
