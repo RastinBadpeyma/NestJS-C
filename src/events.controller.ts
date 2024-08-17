@@ -39,8 +39,8 @@ export class EventsController {
    }
 
    @Get(':id')
-   async findOne(@Param('id') id){
-     return await this.repository.findOne(id);
+   async findOne(@Param('id') id: number){
+     return await this.repository.findOne({ where: { id } });
    }
    @Post()
   async create(@Body() input: CreateEventDto) {
@@ -51,8 +51,8 @@ export class EventsController {
       })
    }
    @Patch(':id')
-   async update(@Param('id') id , @Body() input: UpdateEventDto) {
-    const event = await this.repository.findOne(id);
+   async update(@Param('id') id:number , @Body() input: UpdateEventDto) {
+    const event = await this.repository.findOne({ where: { id } });
     return await this.repository.save({
       ...event,
       ...input,
@@ -61,8 +61,8 @@ export class EventsController {
    }
    @Delete(':id')
    @HttpCode(204)
-   async remove(@Param('id') id){
-    const event = await this.repository.findOne(id);
+   async remove(@Param('id') id : number){
+    const event = await this.repository.findOne({ where: { id } });
    return await this.repository.delete(event);
    }
 
