@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EventsController } from './events.controller';
+import { EventsController } from './events/events.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Event } from './event.entity';
+import { Event } from './events/event.entity';
 import { User } from './user/entities/user.entity';
 import { UserController } from './user/user.controller';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -19,9 +20,10 @@ import { UserController } from './user/user.controller';
     //automatically updates the database schema
     synchronize: true,
   }),
-  TypeOrmModule.forFeature([Event , User]),
+ 
+  EventsModule,
 ],
-  controllers: [AppController, EventsController, UserController ],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
