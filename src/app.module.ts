@@ -7,15 +7,18 @@ import { Event } from './events/event.entity';
 import { User } from './user/entities/user.entity';
 import { UserController } from './user/user.controller';
 import { EventsModule } from './events/events.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
+  imports: [
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot({
     type: 'mysql',
-    host: '127.0.0.1',
-    port: 3306,
-    username: 'root',
-    password: 'example',
-    database: 'nest-events',
+    host: process.env.DB_HOST,
+    port: Number(process.env.PORT),
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database:  process.env.DB_NAME,
     entities: [Event , User],
     //automatically updates the database schema
     synchronize: true,
