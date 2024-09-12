@@ -10,12 +10,9 @@ export class Attendee  {
    name: string;
 
    @ManyToOne(() => Event , (event) => event.attendees , {
-      nullable: false
+      nullable: true
    })
 
-   @JoinColumn({
-      name: 'event_id',
-      // referencedColumnName: 'secondary'
-   })
+   @JoinColumn()
    event: Event;
 }
