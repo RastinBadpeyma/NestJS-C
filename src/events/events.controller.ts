@@ -5,6 +5,7 @@ import { UpdateEventDto } from './update-event.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, MoreThan, RelationId, Repository } from 'typeorm';
 import { Attendee } from './attendee.entity';
+import { EventsService } from './events.sevice';
 
 @Controller('/events')
 export class EventsController {
@@ -14,7 +15,8 @@ export class EventsController {
      @InjectRepository(Event)
      private readonly repository: Repository<Event>,
      @InjectRepository(Attendee)
-     private readonly AttendeeRepository: Repository<Attendee>
+     private readonly AttendeeRepository: Repository<Attendee>,
+     private readonly eventsService: EventsService
    ){}
 
    @Get()
@@ -49,29 +51,32 @@ export class EventsController {
     //   1,
     //   { relations: ['attendees'] }
     // );
-    const event = await this.repository.findOne({
-      where: { id: 1 },
-      relations: ['attendees'],
-    });
+  
     // const event = new Event();
     // event.id = 1;
 
-    const attendee = new Attendee();
-    attendee.name = 'Using cascade';
+    // const attendee = new Attendee();
+    // attendee.name = 'Using cascade';
     // attendee.event = event;
 
-    event.attendees.push(attendee);
+    // event.attendees.push(attendee);
     // event.attendees = [];
 
     // await this.attendeeRepository.save(attendee);
-    await this.repository.save(event);
+    // await this.repository.save(event);
 
-    return event;
+    // return event;
+
+     return await this.repository.createQueryBuilder('e')
+     .select(['e.id' , 'e.name'])
+     .orderBy('e.id' , 'ASC')
+     .take(3)
+     .getMany();
    }
 
    @Get(':id')
    async findOne(@Param('id' , ParseIntPipe) id: number){
-   const event = await this.repository.findOne({ where: { id } });
+   const event = await this.eventsService.getEvent(id);
 
      if(!event){
          throw new NotFoundException();
