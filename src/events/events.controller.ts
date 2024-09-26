@@ -5,7 +5,7 @@ import { UpdateEventDto } from './update-event.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, MoreThan, RelationId, Repository } from 'typeorm';
 import { Attendee } from './attendee.entity';
-import { EventsService } from './events.sevice';
+import { EventsService } from './events.service';
 
 @Controller('/events')
 export class EventsController {

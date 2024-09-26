@@ -3,7 +3,7 @@ import { EventsController } from './events.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Attendee } from './attendee.entity';
 import { Event } from './event.entity';
-import { EventsService } from './events.sevice';
+import { EventsService } from './events.service';
 
 @Module({
    imports: [
