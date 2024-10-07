@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Event } from './event.entity';
 import { AttendeeAnswerEnum } from './attendee.entity';
 import { ListEvents, WhenEventFilter } from './input/list.events';
+import { paginate, PaginateOptions } from 'src/pagination/paginator';
 
 
 
@@ -62,10 +63,12 @@ export class EventsService{
    }
 
 
-   public async getEventsWithAttendeeCountFiltered(filter?: ListEvents) {
+   private async getEventsWithAttendeeCountFiltered(
+    filter?: ListEvents
+  ) {
     let query = this.getEventsWithAttendeeCountQuery();
     if (!filter) {
-      return query.getMany();
+      return query;
     }
     if (filter.when) {
       if (filter.when == WhenEventFilter.Today) {
@@ -85,10 +88,20 @@ export class EventsService{
         query = query.andWhere('YEARWEEK(e.when, 1) = YEARWEEK(CURDATE(), 1) + 1');
       }
     }
-    return await query.getMany();
+    return query;
   }
 
 
+  public async getEventsWithAttendeeCountFilteredPaginated(
+    filter: ListEvents,
+    paginateOptions: PaginateOptions
+  ) {
+    return await paginate(
+      await this.getEventsWithAttendeeCountFiltered(filter),
+      paginateOptions
+    );
+  }
+  
    public async getEvent(id: number): Promise<Event | undefined> {
       const query = this.getEventsWithAttendeeCountQuery()
         .andWhere('e.id = :id', { id });
