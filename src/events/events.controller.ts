@@ -125,13 +125,12 @@ export class EventsController {
    @Delete(':id')
    @HttpCode(204)
    async remove(@Param('id') id : number){
-    const event = await this.repository.findOne({ where: { id } });
+    const result = await this.eventsService.deleteEvent(id);
 
-    if(!event){
+    if(result?.affected !== 1){   
+      // ?. => it's Optional Chaining
       throw new NotFoundException();
     }
-
-   return await this.repository.delete(event);
    }
 
 
