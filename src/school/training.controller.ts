@@ -29,7 +29,7 @@ export class TrainingController {
     // subject.teachers = [teacher1, teacher2];
     // await this.teacherRepository.save([teacher1, teacher2]);
 
-    // How to use One to One
+    /// How to use One to One
     // const user = new User();
     // const profile = new Profile();
 
