@@ -8,7 +8,7 @@ import ormConfigProd from './config/orm.config.prod';
 import { EventsModule } from './events/events.module';
 import { ConfigModule } from '@nestjs/config';
 import { SchoolModule } from './school/school.module';
-
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,9 +20,9 @@ import { SchoolModule } from './school/school.module';
       useFactory: process.env.NODE_ENV !== 'production'
         ? ormConfig : ormConfigProd
   }),
- 
+  AuthModule,
   EventsModule,
-  SchoolModule
+  SchoolModule,
 ],
   controllers: [AppController],
   providers: [AppService],
